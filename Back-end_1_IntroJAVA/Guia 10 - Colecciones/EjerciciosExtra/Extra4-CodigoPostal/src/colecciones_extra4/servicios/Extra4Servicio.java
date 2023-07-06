@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Extra4Servicio {
     Scanner leer = new Scanner(System.in);
     
-    public void ingresarCodigoPostal(HashMap<Integer, String> ciudades) {
+    public void ingresarCodigoPostal(HashMap<String, Integer> ciudades) {
         System.out.print("Ingrese el nombre de la ciudad -> ");
         String nombre = leer.nextLine();
         
@@ -18,25 +18,44 @@ public class Extra4Servicio {
         Integer codigoPostal = leer.nextInt();
         leer.nextLine();
         
-        ciudades.put(codigoPostal, nombre);
+        ciudades.put(nombre, codigoPostal);
     }
     
-    public void mostrarDatos(HashMap<Integer, String> ciudades) {
-        for (Integer codigoPostal : ciudades.keySet()) {
-            System.out.println("Ciudad: " + ciudades.get(codigoPostal));
-            System.out.println("Codigo Postal: " + codigoPostal);
+    public void mostrarDatos(HashMap<String, Integer> ciudades) {
+        for (Map.Entry<String, Integer> entry : ciudades.entrySet()) {
+            System.out.println("Ciudad: " + entry.getKey());
+            System.out.println("Código Postal: " + entry.getValue());
         }
     }
     
     public void buscarCiudad(HashMap<String, Integer> ciudades) {
         System.out.print("Ingrese un codigo postal para buscar -> ");
-        Integer codigoBuscar = leer.nextInt();
-        if (ciudades.containsKey(codigoBuscar)) {
-            System.out.println("Este codigo postal es de la ciudad de " + ciudades.get(codigoBuscar));
-        } else {
-            System.out.println("No hay ninguna ciudad con este codigo postal.");
+        int codigoBuscar = leer.nextInt();
+        leer.nextLine();
+        boolean existe = false;
+        for (Map.Entry<String, Integer> entry : ciudades.entrySet()) {
+            if (entry.getValue() == codigoBuscar) {
+                existe = true;
+                System.out.println("El código postal " + codigoBuscar + " es de la ciudad de " + entry.getKey());
+            }
+        }
+        if (!existe) {
+            System.out.println("El código " + codigoBuscar + " no pertenece a niguna ciudad guardada.");
         }
     }
     
+    public void eliminarCiudad(HashMap<String, Integer> ciudades) {
+        System.out.print("Ingrese el nombre de la ciudad que quiere eliminar -> ");
+        String ciudadEliminar = leer.nextLine();
+        
+        if (ciudades.containsKey(ciudadEliminar)) {
+            ciudades.remove(ciudadEliminar);
+        } else {
+            System.out.println("La ciudad de " + ciudadEliminar + " no está guardada.");
+        }
+    }
     
+    public void dejarDeLeer() {
+        leer.close();
+    }
 }
